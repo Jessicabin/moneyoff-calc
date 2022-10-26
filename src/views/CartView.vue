@@ -28,9 +28,7 @@ export default {
   },
   components: { ShoppingCart, MoneyOffResult, BrandList },
   methods: {
-    handleClick(tab) {
-      console.log(tab);
-    },
+    
   },
 };
 </script>

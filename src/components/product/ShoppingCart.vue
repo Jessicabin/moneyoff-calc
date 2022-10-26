@@ -3,7 +3,7 @@
   <el-button type="primary" @click="cart.saveProductList">保存</el-button>
 
   <el-table :data="productList" style="width: 100%" max-height="300">
-    <el-table-column prop="id" label="ID" width="50" />
+    <el-table-column prop="id" label="ID" width="100" />
     <el-table-column prop="productName" label="商品名" width="150" />
     <el-table-column prop="price" label="活动价" width="120" />
     <!-- <el-table-column prop="categoryCouponType" label="品类券" width="120">

@@ -24,25 +24,14 @@
 <script>
 import useStore from "@/stores";
 import { cloneDeep } from "lodash";
-
-const model = {
-  brandName: "",
-};
+import { BRAND_MODEL,BRAND_FORM_RULES } from "@/models";
 
 export default {
   data() {
     return {
       dialogVisible: false,
       formModel: {},
-      rules: {
-        brandName: [
-          {
-            required: true,
-            message: "请输入品牌名称",
-            trigger: "blur",
-          },
-        ],
-      },
+      rules: BRAND_FORM_RULES
     };
   },
   setup() {
@@ -52,7 +41,7 @@ export default {
   methods: {
     initDialog() {
       this.dialogVisible = true;
-      this.formModel = cloneDeep(model);
+      this.formModel = cloneDeep(BRAND_MODEL);
     },
     closeDialog() {
       this.dialogVisible = false;

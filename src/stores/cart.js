@@ -1,12 +1,11 @@
 import { defineStore } from "pinia";
 import { downloadFile, createId, arrayToMap } from '@/utils';
 import { ElMessage } from 'element-plus'
-import { shoppingCart } from '@/constants/cart'
 import Mapping from "@/utils/mapping";
 
 export const useCartStore = defineStore("cart", {
   state: () => ({
-    productList: shoppingCart,
+    productList: [],
     brandList: [],
     categoryCouponList: [
       { id: 0, couponName: "美妆惊喜券", couponType: "makeup", threshold: 1200, off: 110 },
@@ -15,7 +14,8 @@ export const useCartStore = defineStore("cart", {
     moneyOffList: [
       { id: 0, label: '300-50', threshold: 300, off: 50, },
       { id: 1, label: '200-30', threshold: 200, off: 30, }
-    ] //满减活动
+    ], //满减活动
+    productNextId: 0
   }),
   getters: {
     brandMapping: (state) =>
@@ -23,11 +23,23 @@ export const useCartStore = defineStore("cart", {
     categoryCouponMapping: (state) =>
       new Mapping({ map: arrayToMap({ array: state.categoryCouponList, key: 'couponType', value: 'couponName' }) }),
     moneyOffMapping: (state) =>
-      new Mapping({ map: arrayToMap({ array: state.moneyOffList, key: 'id', value: 'label' }) }),
+      new Mapping({
+        map: arrayToMap({ array: state.moneyOffList, key: 'id', value: 'label' }),
+        config: arrayToMap({ array: state.moneyOffList, key: 'id', value: 'item' }),
+      }),
   },
   actions: {
     addProduct(data) {
-      this.productList.push({ ...data, id: createId() });
+      const productItem = { ...data, id: this.productNextId }
+      const { productName } = productItem
+
+      const sameItem = this.productList.find(i => i.productName === productName)
+      if (!sameItem) {
+        this.productList.push(productItem);
+        this.productNextId = this.productNextId + 1
+      } else {
+        ElMessage.error('重复添加！')
+      }
     },
     deleteProduct(index) {
       this.productList.splice(index, 1);
@@ -38,8 +50,8 @@ export const useCartStore = defineStore("cart", {
     addBrand(data) {
       const brandItem = { ...data, id: createId() }
       const { brandName } = brandItem
-      const findItem = this.brandList.find(i => i.brandName === brandName)
-      if (!findItem) {
+      const sameItem = this.brandList.find(i => i.brandName === brandName)
+      if (!sameItem) {
         this.brandList.push(brandItem)
       } else {
         ElMessage.error('重复添加！')

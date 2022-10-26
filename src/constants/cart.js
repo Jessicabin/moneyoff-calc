@@ -22,5 +22,4 @@ export const shoppingCart = [
   { productName: "科瑞肤面霜", price: 420, categoryCouponType: "", isMoneyOff: true, productCoupon: 25, deposit: 50 },
   { productName: "科瑞肤抗老精华", price: 500, categoryCouponType: "", isMoneyOff: true, productCoupon: 20, deposit: 50 },
   { productName: "OOAK项链", price: 1200, categoryCouponType: "", isMoneyOff: true, productCoupon: 651, deposit: 100 }
-
 ];
