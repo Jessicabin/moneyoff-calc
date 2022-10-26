@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { downloadFile, createId, arrayToMap } from '@/utils';
 import { ElMessage } from 'element-plus'
+import { last } from 'lodash'
 import Mapping from "@/utils/mapping";
 
 export const useCartStore = defineStore("cart", {
@@ -46,6 +47,11 @@ export const useCartStore = defineStore("cart", {
     },
     saveProductList() {
       downloadFile(JSON.stringify(this.productList, null, 2), 'json', 'shoppingCart')
+    },
+    importProductList(data) {
+      this.productList = data
+      const lastId = last(data.sort((a, b) => a.id - b.id)).id
+      this.productNextId = lastId + 1
     },
     addBrand(data) {
       const brandItem = { ...data, id: createId() }

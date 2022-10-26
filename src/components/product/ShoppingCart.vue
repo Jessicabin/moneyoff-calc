@@ -1,7 +1,18 @@
 <template>
-  <el-button type="primary" @click="handleAdd">新增商品</el-button>
-  <el-button type="primary" @click="cart.saveProductList">保存</el-button>
-
+  <div style="display: flex">
+    <el-button type="primary" @click="handleAdd">新增商品</el-button>
+    <el-button type="primary" @click="cart.saveProductList">保存</el-button>
+    <el-upload
+      :accept="'.json'"
+      :show-file-list="false"
+      action="#"
+      :beforeUpload="handleBeforeUpload"
+    >
+      <template #trigger>
+        <el-button> 导入 </el-button>
+      </template>
+    </el-upload>
+  </div>
   <el-table :data="productList" style="width: 100%" max-height="300">
     <el-table-column prop="id" label="ID" width="100" />
     <el-table-column prop="productName" label="商品名" width="150" />
@@ -67,6 +78,14 @@ export default {
   methods: {
     handleAdd() {
       this.$refs.add.initDialog();
+    },
+    handleBeforeUpload(file) {
+      const reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = (e) => {
+        const result = JSON.parse(e.target.result);
+        this.cart.importProductList(result)
+      };
     },
   },
 };
